@@ -54,6 +54,13 @@ class Power(db.Model):
     def __repr__(self):
         return f'<Power {self.id}>'
     
+    @validates('description')
+    def validate_email(self, key, new_description):
+        desc2 = str(new_description)
+        if len(desc2) < 20:
+            raise ValueError(f'Error {desc2} must be at least 20 characters long')
+        return desc2
+    
 class HeroPower(db.Model):
     __tablename__ = 'hero_powers'
 
@@ -73,3 +80,9 @@ class HeroPower(db.Model):
 
     def __repr__(self):
         return f'<HeroPower {self.id}>'
+    
+    @validates('strength')
+    def validate_email(self, key, new_strength):
+        if str(new_strength) != 'Strong' or str(new_strength) != 'Weak' or str(new_strength) != 'Average':
+            raise ValueError(f'Error {new_strength} must be one of the following values, Strong,Weak, or Average')
+        return new_strength
